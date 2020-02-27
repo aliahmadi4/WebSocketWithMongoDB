@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/master}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="container">
+
+        <br/>
+        <form action="/register" method="post" th:object="${user}">
+            <div class="row">
+
+                <div class="form-group col-6">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" id="name" th:value="${user.name}"
+                           aria-describedby="emailHelp">
+                    <small id="emailHelp" class="form-text text-muted">Write your full name</small>
+                </div>
+                <div class="form-group col-6">
+                    <label for="age">Age</label>
+                    <input type="number" class="form-control" name="age" id="age" th:value="${user.age}">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/master}">
+<head>
+    <title>Chat WebSocket</title>
+    <script type="text/javascript">
+        var stompClient = null;
+
+        function setConnected(connected) {
+            document.getElementById('disconnect').disabled = !connected;
+        }
+
+        function connect() {
+            var socket = new SockJS('/chat');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                setConnected(true);
+                console.log('---Connected: ' + frame);
+                stompClient.subscribe('/topic/dashboard', function (messageOutput) {
+                    showMessageOutput(JSON.parse(messageOutput.body));
+                });
+            });
+        }
+
+        function disconnect() {
+            if (stompClient != null) {
+                stompClient.disconnect();
+            }
+            setConnected(false);
+            console.log("Disconnected");
+        }
+
+
+        function showMessageOutput(messageOutput) {
+            var response = document.getElementById('count');
+            response.innerText = messageOutput;
+        }
+
+        connect();
+    </script>
+</head>
+<body>
+<th:block layout:fragment="content">
+<div class="container">
+
+
+        <div>
+            <button id="disconnect" disabled="disabled" onclick="disconnect();" class="btn">
+                Disconnect
+            </button>
+        </div>
+        <br/>
+
+
+
+    <div class="card">
+        <div class="card-header">
+            Number of Users
+        </div>
+        <div class="card-body">
+            <h1 id="count">Loading...</h1>
+        </div>
+    </div>
+
+
+</div>
+</th:block>
+</body>
+</html>
