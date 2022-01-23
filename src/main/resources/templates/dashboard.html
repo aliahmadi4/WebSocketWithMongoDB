@@ -15,8 +15,8 @@
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function (frame) {
                 setConnected(true);
-                console.log('---Connected: ' + frame);
-                stompClient.subscribe('/topic/dashboard', function (messageOutput) {
+                // console.log('---Subscribed to /topic/usersCount: ' + frame);
+                stompClient.subscribe('/topic/usersCount', function (messageOutput) {
                     showMessageOutput(JSON.parse(messageOutput.body));
                 });
             });
@@ -30,7 +30,6 @@
             console.log("Disconnected");
         }
 
-
         function showMessageOutput(messageOutput) {
             var response = document.getElementById('count');
             response.innerText = messageOutput;
@@ -41,7 +40,7 @@
 </head>
 <body>
 <th:block layout:fragment="content">
-<div class="container">
+    <div class="container">
 
 
         <div>
@@ -52,18 +51,17 @@
         <br/>
 
 
+        <div class="card">
+            <div class="card-header">
+                Number of Users
+            </div>
+            <div class="card-body">
+                <h1 id="count" th:text="${usersCount}">Loading...</h1>
+            </div>
+        </div>
 
-    <div class="card">
-        <div class="card-header">
-            Number of Users
-        </div>
-        <div class="card-body">
-            <h1 id="count">Loading...</h1>
-        </div>
+
     </div>
-
-
-</div>
 </th:block>
 </body>
 </html>
